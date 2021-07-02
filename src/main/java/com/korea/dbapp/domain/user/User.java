@@ -1,9 +1,15 @@
 package com.korea.dbapp.domain.user;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.korea.dbapp.domain.post.Post;
 
 @Entity
 public class User {
@@ -16,6 +22,18 @@ public class User {
 	private String email;
 	private String address;
 	
+	@JsonIgnoreProperties({"user"})
+	@OneToMany(mappedBy = "user") // post의 user타입의 변수명 내가 포인트의 주인이 아니다(?)
+	private List<Post> posts;
+	
+	
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 	public int getId() {
 		return id;
 	}
