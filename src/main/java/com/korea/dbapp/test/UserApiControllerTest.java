@@ -36,8 +36,10 @@ public class UserApiControllerTest {
 	
 	// http://localhost:8000/user/2
 	@GetMapping("/test/user/{id}")
-	public User findById(@PathVariable int id) {
-		return userRepository.findById(id).get()/*무조건 있어라는 뜻의 get*/;		
+	public String findById(@PathVariable int id) {
+		User userEntity = userRepository.findById(0).get();/*무조건 있어라는 뜻의 get*/
+		System.out.println(userEntity.toString());
+		return "ok";		
 	}
 	
 	@GetMapping("/test/user/username/{username}")
@@ -76,5 +78,10 @@ public class UserApiControllerTest {
 		userRepository.save(userEntity);
 		
 		return "update ok";
+	}
+	
+	@PostMapping("/test/juso")
+	public String jusoTest(String user) {
+		return user;
 	}
 }

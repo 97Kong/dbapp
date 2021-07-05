@@ -3,6 +3,7 @@ package com.korea.dbapp.domain.user;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class User {
 	private String address;
 	
 	@JsonIgnoreProperties({"user"})
-	@OneToMany(mappedBy = "user") // post의 user타입의 변수명 내가 포인트의 주인이 아니다(?)
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER) // post의 user타입의 변수명 내가 포인트의 주인이 아니다(?)
 	private List<Post> posts;
 	
 	
