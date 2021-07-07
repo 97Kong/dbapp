@@ -2,10 +2,10 @@ package com.korea.dbapp.web;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.net.openssl.ciphers.OpenSSLCipherConfigurationParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,6 +62,34 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	@GetMapping("/user/updateForm")
+	public String updateForm() {
+		// 1. 인증과 권한을 검사해야함.
+		// 2. 세션값 사용하면 됨.
+		return "user/updateForm";
+	}
+	
+	@PostMapping("/user/{id}") // 원래는 Put으로 해야함, 나중에 자바스크립트로 Put 요청하기!!
+	public String update(@PathVariable int id ,String password, String address) {
+		// 공통관심사
+		User principal = (User) session.getAttribute("principal");
+		
+		if(principal == null) {
+			return "redirect:/auth/loginForm";
+		}
+		
+		if(principal != null && id == principal.getId()) {
+			User userEntity = userRepository.findById(id).get();
+			userEntity.setPassword(password);
+			userEntity.setAddress(address);
+			userRepository.save(userEntity);
+			session.setAttribute("principal", userEntity);
+			return "redirect:/";
+		}
+		return "redirect:/auth/loginForm";
+	}
+	
+	
 	@GetMapping("/juso")
 	public String jusoRequest() {
 		return "juso/jusoPopup";
@@ -74,4 +102,6 @@ public class UserController {
 		model.addAttribute("inputYn", inputYn);
 		return "juso/jusoPopup";
 	}
+	
+	
 }
