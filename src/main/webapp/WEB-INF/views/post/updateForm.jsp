@@ -4,16 +4,19 @@
 <div class="container">
 
 	<!-- username=머시기&password=머시기&email=머시기&address=머시기 -->
-	<form action="/post" method="post">
+	<form action="/post/${postEntity.id}/update" method="post">
 		<div class="form-group">
-			<label for="title">Title:</label> <input type="text" class="form-control" placeholder="Enter title" name="title" required="required" />
+			<label for="title">Title:</label> 
+			<input value="${postEntity.title}" type="text" class="form-control" placeholder="Enter title" name="title" required="required" />
 		</div>
 
 		<div class="form-group">
-			<textarea id="summernote" rows="10" class="form-control" name="content"></textarea>
+			<textarea id="summernote" rows="10" class="form-control" name="content">
+				${postEntity.content}
+			</textarea>
 		</div>
 
-		<button type="submit" class="btn btn-primary">글쓰기 완료</button>
+		<button type="submit" class="btn btn-primary">수정 완료</button>
 	</form>
 </div>
 
