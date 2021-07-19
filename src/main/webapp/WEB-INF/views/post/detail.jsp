@@ -5,14 +5,12 @@
 <div class="container">
 	<c:if test="${sessionScope.principal.id == postEntity.user.id}">
 		<a href="/post/${postEntity.id}/updateForm" class="btn btn-warning">수정</a>
-		<form action="/post/${postEntity.id}" method="post" style="display: inline-block">
+
+		<form style="display: inline-block" onsubmit="deleteForm(${postEntity.id})">
 			<button id="btn-delete" class="btn btn-danger" type="submit">삭제</button>
 		</form>
 	</c:if>
-
-
-	<br />
-	<br />
+	<br /> <br />
 	<div>
 		<span>글 번호 : ${postEntity.id}</span> 작성자 : <span><i>${postEntity.user.username}</i></span>
 	</div>
@@ -42,17 +40,55 @@
 		<div class="card-header">
 			<b>댓글 리스트</b>
 		</div>
+
 		<ul id="reply-box" class="list-group">
-			<li id="reply-1" class="list-group-item d-flex justify-content-between">
-				<div>댓글입니다</div>
-				<div class="d-flex">
-					<div class="font-italic">작성자 : 홍길동 &nbsp;</div>
-					<button class="badge">삭제</button>
-				</div>
-			</li>
+
+			<c:forEach var="comment" items="${commentsEntity}">
+				<li id="reply-1" class="list-group-item d-flex justify-content-between">
+					<div>${comment.text}</div>
+					<div class="d-flex">
+						<div class="font-italic">작성자 : ${comment.user.username}&nbsp;</div>
+						<c:if test="${principal.id == comment.user.id}">
+							<button class="badge" onclick="deleteComment(${comment.id})">삭제</button>
+						</c:if>
+					</div>
+				</li>
+			</c:forEach>
+
 		</ul>
 	</div>
 	<br />
 </div>
+<script>
+	async function deleteComment(commentId) {
+		let response = await fetch("/comment/"+commentId, {
+			method : "delete"
+		});
+		
+		let parseResponse = await response.text();
+		
+		if(parseResponse === "ok") {
+			location.reload();
+		}
+	}
+	
+	async function deleteForm(postId) {
+		event.preventDefault();
+
+		let response = await
+		fetch("/post/"+postId, {
+			method : "delete"
+		});
+
+		let parseResponse = await
+		response.text();
+
+		if (parseResponse === "ok") {
+			location.href = "/";
+		} else {
+			alert("삭제 실패");
+		}
+	}
+</script>
 
 <%@ include file="../layout/footer.jsp"%>
