@@ -68,7 +68,7 @@ public class PostController {
 		} 
 	} // end delete
 
-	@GetMapping("/post/saveForm")
+	@GetMapping("/post/saveForm") 
 	public String saveForm() {
 		// 1. 인증 체크 - > 숙제
 

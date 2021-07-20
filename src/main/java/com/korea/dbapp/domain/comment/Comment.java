@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.korea.dbapp.domain.post.Post;
 import com.korea.dbapp.domain.user.User;
 
@@ -21,10 +22,12 @@ public class Comment {
 	private String text;
 	
 	
+	@JsonIgnoreProperties({"posts"})
 	@JoinColumn(name="user_id")
 	@ManyToOne
 	private User user;
 	
+	@JsonIgnoreProperties({"user"})
 	@JoinColumn(name="post_id")
 	@ManyToOne
 	private Post post;
